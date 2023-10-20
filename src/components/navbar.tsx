@@ -1,8 +1,10 @@
 import { AppBar, Button, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useWallet } from '../hooks/useWallet.tsx'
 
 export const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const { account, connectWallet } = useWallet()
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget)
@@ -11,6 +13,10 @@ export const Navbar = () => {
   const handleMenuClose = () => {
     setAnchorEl(null)
   }
+
+  useEffect(() => {
+    setAnchorEl(null)
+  }, [account])
 
   return (
     <AppBar position='fixed'>
@@ -22,8 +28,11 @@ export const Navbar = () => {
           wallet
         </Button>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-          <MenuItem onClick={handleMenuClose}>Login</MenuItem>
-          {/* Add more MenuItems here if needed */}
+          {account ? (
+            <MenuItem>{account}</MenuItem>
+          ) : (
+            <MenuItem onClick={connectWallet}>Connect</MenuItem>
+          )}
         </Menu>
       </Toolbar>
     </AppBar>

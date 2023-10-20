@@ -1,10 +1,12 @@
 import { Container, Grid, Paper, Typography } from '@mui/material'
+import { useWallet } from '../hooks/useWallet.tsx'
 
 export const Wallet = () => {
-  const user = true
+  const { account } = useWallet()
+
   return (
     <Container sx={{ marginTop: '100px' }}>
-      {user ? (
+      {account ? (
         <>
           {/* Balance Overview */}
           <Paper elevation={3} sx={{ padding: '20px', marginBottom: '20px' }}>
@@ -28,7 +30,7 @@ export const Wallet = () => {
         <Grid
           sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}
         >
-          <Typography sx={{ fontSize: '32px' }}>Please connect a wallet</Typography>
+          <Typography sx={{ fontSize: '32px' }}>Please connect your wallet</Typography>
         </Grid>
       )}
     </Container>
