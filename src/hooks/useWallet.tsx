@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
-import { getAccounts, getCHRBalance, getEthBalance } from '../web3-service.tsx'
+import { getAccounts, getCHRBalance, getEthBalance, getNet } from '../web3-service.tsx'
 
 export const useWallet = () => {
   const [account, setAccount] = useState<string | null>(null)
   const [ethBalance, setEthBalance] = useState<string | undefined>('0')
   const [chrBalance, setCHRBalance] = useState<string | undefined>('0')
-  const [chainID, setChainId] = useState('')
+  const [chainID, setChainId] = useState<string | undefined>('')
 
   const updateAccounts = async () => {
     try {
       const accounts = await getAccounts()
       if (accounts.length > 0) {
         setAccount(accounts[0])
+        await getNet().then(res => setChainId(res))
       } else {
         setAccount(null)
       }
@@ -24,10 +25,8 @@ export const useWallet = () => {
     if (window.ethereum) {
       void updateAccounts()
 
-      // When MetaMask account changes
       window.ethereum.on('accountsChanged', updateAccounts)
 
-      // Cleanup event listener
       return () => {
         if (window.ethereum?.removeListener) {
           window.ethereum.removeListener('accountsChanged', updateAccounts)

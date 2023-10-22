@@ -9,10 +9,13 @@ export const Wallet = () => {
     <Container sx={{ marginTop: '100px' }}>
       {account ? (
         <>
-          <Paper elevation={3} sx={{ padding: '20px', marginBottom: '20px' }}>
+          <Grid marginBottom='20px'>
             <Typography variant='h5' textAlign='center' color='#017BFE'>
               {chainID}
             </Typography>
+          </Grid>
+
+          <Paper elevation={3} sx={{ padding: '20px', marginBottom: '20px' }}>
             <Typography variant='h5'>{ethBalance}</Typography>
             <Typography variant='body1'>ETH</Typography>
           </Paper>

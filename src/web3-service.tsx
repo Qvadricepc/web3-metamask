@@ -63,3 +63,22 @@ export const sendETH = async (fromAddress: string, toAddress: string, amountInEt
     }
   }
 }
+
+export const getNet = async () => {
+  if (web3) {
+    const result = await web3.eth.net.getId().then(netId => {
+      console.log(netId)
+      switch (netId) {
+        case 1n:
+          return 'Ethereum Mainnet'
+          break
+        case 97n:
+          return 'Binance Smart Chain'
+          break
+        default:
+          return 'Unknown Network'
+      }
+    })
+    return result
+  }
+}
