@@ -34,11 +34,26 @@ export const sendETH = async (fromAddress: string, toAddress: string, amountInEt
   if (web3) {
     const amountInWei = web3.utils.toWei(amountInEther, 'ether')
 
+    // Checking balance of fromAddress
+    const balance = await web3.eth.getBalance(fromAddress)
+    if (parseInt(balance, 10) < parseInt(amountInWei, 10)) {
+      throw new Error('Insufficient balance')
+    }
+
+    const gasPrice = await web3.eth.getGasPrice()
+    const gasLimit = await web3.eth.estimateGas({
+      from: fromAddress,
+      to: toAddress,
+      value: amountInWei,
+    })
+
     try {
       const transactionReceipt = await web3.eth.sendTransaction({
         from: fromAddress,
         to: toAddress,
         value: amountInWei,
+        gasPrice,
+        gas: gasLimit,
       })
 
       return transactionReceipt
