@@ -29,3 +29,22 @@ export const getCHRBalance = async (account: string) => {
     return balance
   }
 }
+
+export const sendETH = async (fromAddress: string, toAddress: string, amountInEther: string) => {
+  if (web3) {
+    const amountInWei = web3.utils.toWei(amountInEther, 'ether')
+
+    try {
+      const transactionReceipt = await web3.eth.sendTransaction({
+        from: fromAddress,
+        to: toAddress,
+        value: amountInWei,
+      })
+
+      return transactionReceipt
+    } catch (error) {
+      console.error('Error sending ETH:', error)
+      throw error
+    }
+  }
+}

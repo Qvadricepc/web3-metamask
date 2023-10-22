@@ -1,5 +1,6 @@
 import { Container, Grid, Paper, Typography } from '@mui/material'
 import { useWallet } from '../hooks/useWallet.tsx'
+import { SendCrypto } from './send-crypto.tsx'
 
 export const Wallet = () => {
   const { account, ethBalance, chrBalance } = useWallet()
@@ -19,6 +20,8 @@ export const Wallet = () => {
             </Typography>
             <Typography variant='body1'>CHR Token</Typography>
           </Paper>
+
+          <SendCrypto currentAccount={account} />
         </>
       ) : (
         <Grid
