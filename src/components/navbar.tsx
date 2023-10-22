@@ -29,7 +29,11 @@ export const Navbar = () => {
         </Button>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           {account ? (
-            <MenuItem>{account}</MenuItem>
+            <MenuItem>
+              <Typography sx={{ fontSize: { xs: '8px', xl: '16px' } }}>
+                Wallet address: {account}
+              </Typography>
+            </MenuItem>
           ) : (
             <MenuItem onClick={connectWallet}>Connect</MenuItem>
           )}

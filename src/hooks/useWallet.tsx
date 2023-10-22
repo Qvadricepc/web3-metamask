@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-import { getAccounts } from '../web3-service.tsx'
+import { getAccounts, getCHRBalance, getEthBalance } from '../web3-service.tsx'
 
 export const useWallet = () => {
   const [account, setAccount] = useState<string | null>(null)
+  const [ethBalance, setEthBalance] = useState<string | undefined>('0')
+  const [chrBalance, setCHRBalance] = useState<string | undefined>('0')
 
   const updateAccounts = async () => {
     try {
@@ -33,6 +35,37 @@ export const useWallet = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (window.ethereum) {
+      const handleChainChanged = (chainId: string) => {
+        console.log('New chain ID:', chainId)
+
+        const supportedChains = ['0x1', '0x61']
+
+        if (!supportedChains.includes(chainId)) {
+          alert(
+            'Unsupported network! Please switch to Ethereum mainnet or Binance Smart Chain testnet.'
+          )
+        }
+      }
+
+      window.ethereum.on('chainChanged', handleChainChanged)
+
+      return () => {
+        window.ethereum?.removeListener?.('chainChanged', (chainId: string) => {
+          console.log('Chain ID:', chainId)
+        })
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (account) {
+      void getEthBalance(account).then(res => setEthBalance(res))
+      void getCHRBalance(account).then(res => setCHRBalance(res))
+    }
+  }, [account]) // This useEffect will re-run if 'account' changes
+
   const connectWallet = async () => {
     if (window.ethereum) {
       try {
@@ -53,5 +86,5 @@ export const useWallet = () => {
     }
   }
 
-  return { account, connectWallet }
+  return { account, ethBalance, chrBalance, connectWallet }
 }
