@@ -45,7 +45,7 @@ export const useWallet = () => {
         const supportedChains = ['0x1', '0x61']
 
         if (!supportedChains.includes(chainId)) {
-          alert(
+          setChainId(
             'Unsupported network! Please switch to Ethereum mainnet or Binance Smart Chain testnet.'
           )
         }

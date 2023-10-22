@@ -10,7 +10,11 @@ export const Wallet = () => {
       {account ? (
         <>
           <Grid marginBottom='20px'>
-            <Typography variant='h5' textAlign='center' color='#017BFE'>
+            <Typography
+              variant='h5'
+              textAlign='center'
+              color={chainID?.includes('Unsupported') ? 'red' : '#017BFE'}
+            >
               {chainID}
             </Typography>
           </Grid>
