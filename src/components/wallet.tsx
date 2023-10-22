@@ -3,13 +3,16 @@ import { useWallet } from '../hooks/useWallet.tsx'
 import { SendCrypto } from './send-crypto.tsx'
 
 export const Wallet = () => {
-  const { account, ethBalance, chrBalance } = useWallet()
+  const { account, ethBalance, chrBalance, chainID } = useWallet()
 
   return (
     <Container sx={{ marginTop: '100px' }}>
       {account ? (
         <>
           <Paper elevation={3} sx={{ padding: '20px', marginBottom: '20px' }}>
+            <Typography variant='h5' textAlign='center' color='#017BFE'>
+              {chainID}
+            </Typography>
             <Typography variant='h5'>{ethBalance}</Typography>
             <Typography variant='body1'>ETH</Typography>
           </Paper>

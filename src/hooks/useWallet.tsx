@@ -5,6 +5,7 @@ export const useWallet = () => {
   const [account, setAccount] = useState<string | null>(null)
   const [ethBalance, setEthBalance] = useState<string | undefined>('0')
   const [chrBalance, setCHRBalance] = useState<string | undefined>('0')
+  const [chainID, setChainId] = useState('')
 
   const updateAccounts = async () => {
     try {
@@ -39,6 +40,8 @@ export const useWallet = () => {
     if (window.ethereum) {
       const handleChainChanged = (chainId: string) => {
         console.log('New chain ID:', chainId)
+        if (chainId === '0x1') setChainId('Ethereum Mainnet')
+        if (chainId === '0x61') setChainId('Binance Smart Chain Testnet')
 
         const supportedChains = ['0x1', '0x61']
 
@@ -64,7 +67,7 @@ export const useWallet = () => {
       void getEthBalance(account).then(res => setEthBalance(res))
       void getCHRBalance(account).then(res => setCHRBalance(res))
     }
-  }, [account]) // This useEffect will re-run if 'account' changes
+  }, [account, chainID])
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -86,5 +89,5 @@ export const useWallet = () => {
     }
   }
 
-  return { account, ethBalance, chrBalance, connectWallet }
+  return { account, ethBalance, chrBalance, connectWallet, chainID }
 }
