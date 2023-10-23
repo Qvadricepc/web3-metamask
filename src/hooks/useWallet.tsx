@@ -6,6 +6,7 @@ export const useWallet = () => {
   const [ethBalance, setEthBalance] = useState<string | undefined>('0')
   const [chrBalance, setCHRBalance] = useState<string | undefined>('0')
   const [chainID, setChainId] = useState<string | undefined>('')
+  const [error, setError] = useState('')
 
   const updateAccounts = async () => {
     try {
@@ -17,7 +18,7 @@ export const useWallet = () => {
         setAccount(null)
       }
     } catch (error) {
-      console.error('Error fetching accounts:', error)
+      setError(`Error fetching accounts: ${(error as Error).message}`)
     }
   }
 
@@ -38,7 +39,6 @@ export const useWallet = () => {
   useEffect(() => {
     if (window.ethereum) {
       const handleChainChanged = (chainId: string) => {
-        console.log('New chain ID:', chainId)
         if (chainId === '0x1') setChainId('Ethereum Mainnet')
         if (chainId === '0x61') setChainId('Binance Smart Chain Testnet')
 
@@ -78,15 +78,15 @@ export const useWallet = () => {
         if (accounts.length > 0) {
           setAccount(accounts[0])
         } else {
-          console.error('No accounts found.')
+          setError('No accounts found.')
         }
       } catch (error) {
-        console.error('Error accessing wallet:', error)
+        setError(`Error accessing wallet: ${(error as Error).message}`)
       }
     } else {
-      console.error('Please install provider (MetaMask, etc.)')
+      setError('Please install provider (MetaMask, etc.)')
     }
   }
 
-  return { account, ethBalance, chrBalance, connectWallet, chainID }
+  return { account, ethBalance, chrBalance, connectWallet, chainID, error }
 }

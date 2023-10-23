@@ -3,7 +3,7 @@ import { useWallet } from '../hooks/useWallet.tsx'
 import { SendCrypto } from './send-crypto.tsx'
 
 export const Wallet = () => {
-  const { account, ethBalance, chrBalance, chainID } = useWallet()
+  const { account, ethBalance, chrBalance, chainID, error } = useWallet()
 
   return (
     <Container sx={{ marginTop: '100px' }}>
@@ -40,6 +40,7 @@ export const Wallet = () => {
           <Typography sx={{ fontSize: '32px' }}>Please connect your wallet</Typography>
         </Grid>
       )}
+      {error && <Typography color='red'>{error}</Typography>}
     </Container>
   )
 }

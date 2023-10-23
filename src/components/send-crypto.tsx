@@ -1,13 +1,26 @@
 import { useState } from 'react'
-import { Button, TextField, Paper, Container, Typography } from '@mui/material'
+import { Button, TextField, Paper, Container, Typography, CircularProgress } from '@mui/material'
 import { sendETH } from '../web3-service.tsx'
 
 export const SendCrypto = ({ currentAccount }: { currentAccount: string }) => {
   const [recipientAddress, setRecipientAddress] = useState('')
   const [amount, setAmount] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | undefined>('')
 
-  const handleSend = () => {
-    void sendETH(currentAccount, recipientAddress, amount)
+  const handleSend = async () => {
+    setLoading(true)
+    try {
+      await sendETH(currentAccount, recipientAddress, amount)
+      setLoading(false)
+    } catch (e: any) {
+      setLoading(false)
+      setError(e.message)
+    }
+  }
+
+  const isDisabled = () => {
+    if (amount === '' || recipientAddress === '') return true
   }
 
   return (
@@ -22,7 +35,10 @@ export const SendCrypto = ({ currentAccount }: { currentAccount: string }) => {
           fullWidth
           margin='normal'
           value={recipientAddress}
-          onChange={e => setRecipientAddress(e.target.value)}
+          onChange={e => {
+            setError('')
+            setRecipientAddress(e.target.value)
+          }}
         />
         <TextField
           label='Amount'
@@ -30,12 +46,16 @@ export const SendCrypto = ({ currentAccount }: { currentAccount: string }) => {
           fullWidth
           margin='normal'
           value={amount}
-          onChange={e => setAmount(e.target.value)}
+          onChange={e => {
+            setError('')
+            setAmount(e.target.value)
+          }}
         />
-        <Button variant='contained' color='primary' onClick={handleSend}>
-          Send
+        <Button disabled={isDisabled()} variant='contained' color='primary' onClick={handleSend}>
+          {loading ? <CircularProgress /> : 'Send'}
         </Button>
       </Paper>
+      {error && <Typography color='red'>{error}</Typography>}
     </Container>
   )
 }
