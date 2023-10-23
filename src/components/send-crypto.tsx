@@ -55,7 +55,11 @@ export const SendCrypto = ({ currentAccount }: { currentAccount: string }) => {
           {loading ? <CircularProgress /> : 'Send'}
         </Button>
       </Paper>
-      {error && <Typography color='red'>{error}</Typography>}
+      {error && (
+        <Typography color='red' textAlign='center'>
+          {error}
+        </Typography>
+      )}
     </Container>
   )
 }

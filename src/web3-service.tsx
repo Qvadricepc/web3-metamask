@@ -34,9 +34,8 @@ export const sendETH = async (fromAddress: string, toAddress: string, amountInEt
   if (web3) {
     const amountInWei = web3.utils.toWei(amountInEther, 'ether')
 
-    // Checking balance of fromAddress
     const balance = await web3.eth.getBalance(fromAddress)
-    if (parseInt(balance, 10) < parseInt(amountInWei, 10)) {
+    if (parseInt(String(balance), 10) < parseInt(amountInWei, 10)) {
       throw new Error('Insufficient balance')
     }
 

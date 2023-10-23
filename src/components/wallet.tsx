@@ -1,10 +1,15 @@
 import { Container, Grid, Paper, Typography } from '@mui/material'
-import { useWallet } from '../hooks/useWallet.tsx'
 import { SendCrypto } from './send-crypto.tsx'
 
-export const Wallet = () => {
-  const { account, ethBalance, chrBalance, chainID, error } = useWallet()
+interface IWallet {
+  account: string | null
+  ethBalance: string | undefined
+  chrBalance: string | undefined
+  chainID: string | undefined
+  error: string
+}
 
+export const Wallet: React.FC<IWallet> = ({ account, ethBalance, chrBalance, chainID, error }) => {
   return (
     <Container sx={{ marginTop: '100px' }}>
       {account ? (
@@ -40,7 +45,11 @@ export const Wallet = () => {
           <Typography sx={{ fontSize: '32px' }}>Please connect your wallet</Typography>
         </Grid>
       )}
-      {error && <Typography color='red'>{error}</Typography>}
+      {error && (
+        <Typography color='red' textAlign='center'>
+          {error}
+        </Typography>
+      )}
     </Container>
   )
 }

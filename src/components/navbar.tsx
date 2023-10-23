@@ -1,10 +1,13 @@
 import { AppBar, Button, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useWallet } from '../hooks/useWallet.tsx'
 
-export const Navbar = () => {
+interface INavbar {
+  account: string | null
+  connectWallet: () => Promise<void>
+}
+
+export const Navbar: React.FC<INavbar> = ({ account, connectWallet }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { account, connectWallet } = useWallet()
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget)
